@@ -8,11 +8,7 @@ const router = createRouter({
     { path: "/", redirect: "/cards" },
     { path: "/cards", name: "cards", component: CardsView },
     { path: "/deck-builder", name: "deck-builder", component: DeckBuilderView },
-    {
-      path: "/deck-builder/:deckId",
-      name: "deck-edit",
-      component: DeckBuilderView,
-    },
+    { path: "/:pathMatch(.*)*", redirect: "/cards" },
   ],
 });
 

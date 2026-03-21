@@ -17,20 +17,6 @@ export type CardKeyword =
   | "Sly"
   | "Eternal";
 
-// ── Local card data structure (for static cards) ──
-export interface Card {
-  id: string;
-  name: string;
-  color: string;
-  type: string;
-  rarity: string;
-  cost: number | string;
-  description: string;
-  upgradedDescription?: string;
-  flavorText?: string;
-  tags: string[];
-}
-
 // ── Raw API response shape ──
 export interface ApiCard {
   id: string;
