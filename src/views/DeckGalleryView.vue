@@ -134,6 +134,25 @@ const maxBinOf = (curve: number[]) => Math.max(1, ...curve)
       </select>
     </div>
 
+    <!-- Loading / Error state -->
+    <div v-if="galleryStore.loading" class="flex flex-wrap gap-4">
+      <div v-for="n in 6" :key="n" class="rounded-xl overflow-hidden flex flex-col" style="background:var(--bg-surface);border:1px solid var(--border);width:100%">
+        <div class="h-1 skeleton" />
+        <div class="p-4 space-y-3">
+          <div class="skeleton h-4 rounded w-1/2" />
+          <div class="skeleton h-3 rounded w-1/3" />
+          <div class="skeleton h-8 rounded w-full" />
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="galleryStore.error && !galleryStore.publishedDecks.length"
+         class="flex flex-col items-center py-20 text-center">
+      <p class="text-4xl mb-4">⚠️</p>
+      <p class="font-medium mb-2" style="color:var(--text-primary);">{{ galleryStore.error }}</p>
+      <button class="btn-accent mt-3" @click="galleryStore.fetchDecks()">Try Again</button>
+    </div>
+
     <!-- Class filter pills -->
     <div class="flex flex-wrap gap-2">
       <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border"

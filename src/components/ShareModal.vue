@@ -14,7 +14,8 @@ const tab       = ref<'link' | 'publish'>('link')
 const nickname  = ref(localStorage.getItem('sots2-nickname') ?? '')
 const copied    = ref(false)
 const published = ref(false)
-const busy      = ref(false)
+const busy         = ref(false)
+const publishError = ref<string | null>(null)
 
 watch(() => props.show, (v) => {
   if (v) { tab.value = 'link'; copied.value = false; published.value = false }
@@ -37,14 +38,20 @@ async function copyLink() {
   setTimeout(() => copied.value = false, 2000)
 }
 
-function publish() {
+async function publish() {
   if (!nickname.value.trim() || !props.deck) return
   busy.value = true
-  localStorage.setItem('sots2-nickname', nickname.value.trim())
-  galleryStore.publishDeck(props.deck, cardsStore.cards, nickname.value.trim())
-  busy.value = false
-  published.value = true
-  setTimeout(() => { published.value = false; emit('close') }, 1500)
+  publishError.value = null
+  try {
+    localStorage.setItem('sots2-nickname', nickname.value.trim())
+    await galleryStore.publishDeck(props.deck, cardsStore.cards, nickname.value.trim())
+    published.value = true
+    setTimeout(() => { published.value = false; emit('close') }, 1800)
+  } catch (e: any) {
+    publishError.value = e?.message ?? 'Failed to publish'
+  } finally {
+    busy.value = false
+  }
 }
 </script>
 
@@ -122,6 +129,7 @@ function publish() {
                 <span v-if="busy">Publishing…</span>
                 <span v-else>🌐 Publish to Gallery</span>
               </button>
+              <p v-if="publishError" class="text-xs text-red-400 text-center">{{ publishError }}</p>
             </template>
           </div>
         </div>
