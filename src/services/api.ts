@@ -14,14 +14,12 @@ export async function fetchCards(
 ): Promise<ApiCard[]> {
   const params = new URLSearchParams();
   params.set("lang", filters.lang ?? "eng");
-
   if (filters.color) params.set("color", filters.color);
   if (filters.type) params.set("type", filters.type);
   if (filters.rarity) params.set("rarity", filters.rarity);
   if (filters.keyword) params.set("keyword", filters.keyword);
   if (filters.tag) params.set("tag", filters.tag);
   if (filters.search) params.set("search", filters.search);
-
   const res = await fetch(`${BASE_URL}?${params.toString()}`);
   if (!res.ok) throw new Error(`API error ${res.status}: ${res.statusText}`);
   return res.json() as Promise<ApiCard[]>;

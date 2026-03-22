@@ -3,10 +3,8 @@ import { onMounted, onUnmounted } from 'vue'
 import { useThemeStore } from '@/stores/useThemeStore'
 import NavBar from '@/components/NavBar.vue'
 
-// Init theme store (applies class to html element)
 useThemeStore()
 
-// Ember particles (dark mode only ambience)
 let emberInterval: ReturnType<typeof setInterval>
 onMounted(() => {
   emberInterval = setInterval(() => {
@@ -35,7 +33,6 @@ onUnmounted(() => clearInterval(emberInterval))
 
 <template>
   <div class="min-h-screen" style="background: var(--bg-base);">
-    <!-- Atmospheric bg layers (dark only) -->
     <div class="dark:block hidden fixed inset-0 pointer-events-none z-0">
       <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.04) 0%, transparent 60%);" />
       <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);" />

@@ -14,7 +14,6 @@ const defaultFilters = (): ApiFilters => ({
 })
 
 export const useCardsStore = defineStore('cards', () => {
-  // ── State ──
   const cards   = ref<ApiCard[]>([])
   const loading = ref(false)
   const error   = ref<string | null>(null)
@@ -24,11 +23,9 @@ export const useCardsStore = defineStore('cards', () => {
   const viewMode = ref<ViewMode>('grid')
   const initialized = ref(false)
 
-  // ── Sorted results (API handles filtering, we handle sort) ──
   const sortedCards = computed<ApiCard[]>(() => {
     const list = [...cards.value]
     const dir = sortDir.value === 'asc' ? 1 : -1
-
     list.sort((a, b) => {
       switch (sort.value) {
         case 'name':
@@ -54,7 +51,6 @@ export const useCardsStore = defineStore('cards', () => {
     return list
   })
 
-  // ── Fetch ──
   async function load() {
     loading.value = true
     error.value   = null
@@ -70,11 +66,8 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   const debouncedLoad = useDebounceFn(load, 350)
-
-  // Auto-fetch on filter change
   watch(filters, () => debouncedLoad(), { deep: true })
 
-  // ── Filter actions ──
   function setSearch(v: string)  { filters.value.search  = v }
   function setColor(v: string)   { filters.value.color   = v as any }
   function setType(v: string)    { filters.value.type    = v as any }
@@ -95,32 +88,11 @@ export const useCardsStore = defineStore('cards', () => {
   }
   function setViewMode(m: ViewMode) { viewMode.value = m }
 
-  // ── Initial load ──
   load()
 
   return {
-    cards,
-    sortedCards,
-    loading,
-    error,
-    filters,
-    sort,
-    sortDir,
-    viewMode,
-    initialized,
-    load,
-    setSearch,
-    setColor,
-    setType,
-    setRarity,
-    setKeyword,
-    setTag,
-    toggleColor,
-    toggleType,
-    toggleRarity,
-    toggleKeyword,
-    resetFilters,
-    setSort,
-    setViewMode,
+    cards, sortedCards, loading, error, filters, sort, sortDir, viewMode, initialized,
+    load, setSearch, setColor, setType, setRarity, setKeyword, setTag,
+    toggleColor, toggleType, toggleRarity, toggleKeyword, resetFilters, setSort, setViewMode,
   }
 })
